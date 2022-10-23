@@ -1,0 +1,503 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is a sample Petstore server.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  version: "1.0.0"
+  title: E-commerce Project 3
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license: 
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Group4-Project-FE-BE/openapi_project2_team4/1.0.0
+  - url: 'https://petstore.swagger.io/v2'
+tags:
+  - name: User #login, register, lihat profile user, update profile user, delelte profile (non aktif dgn delete gorm)
+    description: API mengelola fitur User  
+  - name: Product
+    description:  API mengelola fitur Product  
+  - name: Cart
+    description:  API mengelola fitur Cart
+  - name: Checkout
+    description:  API mengelola fitur Checkout
+  - name: Pembayaran
+    description:  API mengelola fitur Pembayaran
+  - name: Toko saya
+    description:  API mengelola fitur Toko saya
+  - name: History pembelian
+    description:  API mengelola fitur History pembelian
+  - name: History penjualan
+    description:  API mengelola fitur History penjualan
+  - name: Profile
+    description:  API mengelola fitur Profile
+  
+paths:
+  /login:
+    post:
+      security:
+        - bearerAuth: []
+      summary: "Login User"
+      tags:
+      - "User"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                "email":
+                  type: string
+                "password":
+                  type: string
+            example:
+              email: "adidas@gmail.com"
+              password: "123"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesLoginResult"
+              example:
+                message: "Login Success"
+                data:
+                  id: 1
+                  email: "adidas@gmail.com"
+                  name: "adidas"
+                  phone: "08771079"
+                  bio: "Adidas"
+                  token: "bC5jb20ifQ.TKw15NmLbSdIRwXWiu6UiMIudaCe5ecqyANNvA7YL"
+        "400" :
+          $ref : "#/components/responses/400"  
+        '500':
+          $ref: "#/components/responses/500"
+
+  /register :
+    post:
+      summary: "Insert Data User"
+      tags:
+      - "User"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+                $ref: "#/components/schemas/InsertUserObject"
+            example:
+              email: "adidas@gmail.com"
+              password: "123"
+              name: "adidas"
+              alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+      responses:
+        "201":
+          description: "Success create data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResult"
+              example:
+                message: "User successfully created"
+                data:
+                  id: 1
+                  email: "adidas@gmail.com"
+                  name: "adidas"
+                  alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"
+        '500':
+          $ref: "#/components/responses/500"
+  /users :
+    put: 
+      security:
+        - bearerAuth: []
+      summary: "Update Data user"
+      tags:
+        - "User"
+      requestBody:
+        description: "Update user data"
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/EditUserObject"
+            example:
+              data:
+                email: "adidas@gmail.com"
+                password: "123"
+                name: "gibran"
+                phone: "089234324"
+                bio: "Nike"
+                gender : "male"
+                location : "Denpasar"
+      responses:
+        '200':
+          description: "Success update data"
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/SuccessResult"
+              example:
+                message: "Success update data"
+                data:
+                  id: 1
+                  email: "adidas@gmail.com"
+                  name: "gibran"
+                  phone: "089234324"
+                  bio: "nike"
+                  gender : "male"
+                  location : "Denpasar"
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"           
+        '500':
+          $ref: "#/components/responses/500"
+    get:
+      security:
+        - bearerAuth: []    
+      summary: "Get Users Data"
+      tags:
+      - "User"
+      responses:
+        "200":
+          description: "Success Get Data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayResult"
+              example:
+                message: "Success Get Data"
+                data:
+                - id: 1
+                  email: "iqbal@gmail.com"
+                  name: "iqbal"
+                  phone: "089234324"
+                  bio: "nike and adidas"
+                  is_active: true            
+                - id: 2
+                  email: "ratih@gmail.com"
+                  name: "ratih"
+                  phone: "089234324"
+                  bio: "nike and adidas"
+                  is_active: true            
+                - id: 3
+                  email: "boby@gmail.com"
+                  name: "boby"
+                  phone: "089234324"
+                  bio: "nike and adidas"
+                  is_active: true            
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"
+        "500" :
+          $ref : "#/components/responses/500"
+  /users/{email}:
+    get:
+      security:
+        - bearerAuth: []    
+      summary: "User Data"
+      tags:
+      - "User"
+      parameters:
+        - name: email
+          in: path
+          description: "Email parameter"
+          required: true
+          schema:
+            type: string
+          examples:
+            email: 
+              value: "cecep@gmail.com"
+      responses:
+        "200":
+          description: "Success Get Data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResult"
+              example:
+                message: "Success Get Data"
+                data:
+                  id: 1
+                  email: "boby@gmail.com"
+                  name: "boby"
+                  phone: "089234324"
+                  bio: "nike and adidas"
+                  is_active: true            
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"
+        "500" :
+          $ref : "#/components/responses/500"
+  /users/:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: "Delete User Data"
+      tags:
+        - "User"
+      responses:
+        "200":
+          description: "Success Delete Data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResult"
+              example:
+                message: "Success Delete Data"
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
+
+components:
+  securitySchemes:
+    "bearerAuth" :
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  
+  schemas:
+    "GetUserObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "email":
+          type: string
+        "name":
+          type: string
+        "phone":
+          type: string
+        "bio":
+          type: string  
+        "gender":
+          type: string  
+        "location":
+          type: string  
+    "ArrayUserObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/GetUserObject"
+    "InsertUserObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "email":
+          type: string
+        "password":
+          type: string
+        "name":
+          type: string
+        "phone":
+          type: string
+        "bio":
+          type: string    
+    "EditUserObject":
+      type: object
+      properties:
+        "email":
+          type: string
+        "password":
+          type: string
+        "name":
+          type: string
+        "phone":
+          type: string
+        "gender":
+          type: string
+        "location":
+          type: string
+        "bio":
+          type: string 
+    "PostingObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "name_user":
+          type: string
+        "image":
+          properties:
+            imageId:
+              type: integer
+            imageUrl:
+              type: string
+            fileName:
+              type: string
+              format: binary
+        "content":
+          type: string
+        "id_user":
+          type: integer
+    "InsertPostingObject":
+      type: object
+      properties:
+        "name_user":
+          type: string
+        "image":
+          properties:
+            imageId:
+              type: integer
+            imageUrl:
+              type: string
+            fileName:
+              type: string
+              format: binary
+        "content":
+          type: string
+        "id_user":
+          type: integer
+    "EditPostingObject":
+      type: object
+      properties:
+        "name_user":
+          type: string
+        "image":
+          properties:
+            imageId:
+              type: integer
+            imageUrl:
+              type: string
+            fileName:
+              type: string
+              format: binary
+        "content":
+          type: string
+
+    "CommentObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "name":
+          type: integer
+        "comment_value":
+          type: string
+        "id_user":
+          type: integer
+        "id_posting":
+          type: string
+    "InsertCommentObject":
+      type: object
+      properties:
+        "name":
+          type: string
+        "comment_value":
+          type: string
+        "id_user":
+          type: integer
+        "id_posting":
+          type: string  
+    "EditCommentObject":
+      type: object
+      properties:
+        "comment_value":
+          type: string    
+    "ArrayPostingObj":
+      type: array
+      items :
+        $ref: "#/components/schemas/PostingObject"
+    "ArrCommentObject":
+      type: array
+      items:
+        $ref: "#/components/schemas/CommentObject"    
+    "SuccessResult":
+      type: object
+      properties:
+        message: 
+          type: string
+        data:
+          type: object
+    "SuccesLoginResult":
+      type: object
+      properties:
+        message: 
+          type: string
+        data:
+          type: object
+        token: 
+          type: string
+    "SuccesArrayResult":
+      type: object
+      properties:
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrCommentObject"
+          
+  responses:
+    '200':
+      description: "Success Process Data"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+              data:
+                type: object
+    '201':
+      description: "Success Create Data"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: 
+                type: string
+              data:
+                type: object
+    '400':
+      description: "Wrong Request From User"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. Please check your input."
+    '401':
+      description: "Authorization information is missing or invalid."
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. User not authorized for this request."
+    '500':
+      description: "Error from server"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. Please check server."
