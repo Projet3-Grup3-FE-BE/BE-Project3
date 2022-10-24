@@ -85,6 +85,7 @@ paths:
             schema:
                 $ref: "#/components/schemas/InsertUserObject"
             example:
+              username: "gibran"
               email: "adidas@gmail.com"
               password: "123"
               name: "adidas"
@@ -100,6 +101,7 @@ paths:
                 message: "User successfully created"
                 data:
                   id: 1
+                  username: "gibran"
                   email: "adidas@gmail.com"
                   name: "adidas"
                   alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
@@ -156,46 +158,27 @@ paths:
           $ref : "#/components/responses/401"           
         '500':
           $ref: "#/components/responses/500"
-    get:
+    delete:
       security:
-        - bearerAuth: []    
-      summary: "Get Users Data"
+        - bearerAuth: []
+      summary: "Delete User Data"
       tags:
-      - "User"
+        - "User"
       responses:
         "200":
-          description: "Success Get Data"
+          description: "Success Delete Data"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccessResult"
               example:
-                message: "Success Get Data"
-                data:
-                - id: 1
-                  email: "iqbal@gmail.com"
-                  name: "iqbal"
-                  phone: "089234324"
-                  bio: "nike and adidas"
-                  is_active: true            
-                - id: 2
-                  email: "ratih@gmail.com"
-                  name: "ratih"
-                  phone: "089234324"
-                  bio: "nike and adidas"
-                  is_active: true            
-                - id: 3
-                  email: "boby@gmail.com"
-                  name: "boby"
-                  phone: "089234324"
-                  bio: "nike and adidas"
-                  is_active: true            
+                message: "Success Delete Data"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
-          $ref : "#/components/responses/401"
-        "500" :
-          $ref : "#/components/responses/500"
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
 
   /users/{email}:
     get:
@@ -236,7 +219,7 @@ paths:
           $ref : "#/components/responses/401"
         "500" :
           $ref : "#/components/responses/500"
-  /users/:id:
+  /users/username:
     get: 
       security:
         - bearerAuth: []
@@ -278,21 +261,28 @@ paths:
           $ref : "#/components/responses/401"   
         '500':
           $ref: "#/components/responses/500"
-    delete:
+  /me:
+    get:
       security:
         - bearerAuth: []
-      summary: "Delete User Data"
+      summary: "Get me date User (token)"
       tags:
         - "User"
       responses:
-        "200":
-          description: "Success Delete Data"
+        "201":
+          description: "Success User Me"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SuccessResult"
               example:
-                message: "Success Delete Data"
+                message: "User successfully Me"
+                data:
+                  id: 1
+                  name: "gibran"
+                  phone: "089234324"
+                  recipient_address: "jalan buka hati"
+                  shop_name: "kuda kencana"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -418,9 +408,36 @@ paths:
           $ref : "#/components/responses/401"   
         '500':
           $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: "ID Product parameter"
+          required: true
+          schema:
+            type: integer
+      summary: "Delete Product data"
+      tags:
+        - "Product"
+      responses:
+        "200":
+          description: "Success Delete Product Data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResult"
+              example:
+                message: "Success Delete cart Data"
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
 
-######### CART ###########
-
+########## CART ########
   /carts:
     post:
       security:
