@@ -63,10 +63,13 @@ paths:
                 message: "Login Success"
                 data:
                   id: 1
+                  username: "adidas"
                   email: "adidas@gmail.com"
-                  name: "adidas"
+                  name: "adidas Feet"
                   phone: "08771079"
-                  bio: "Adidas"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
                   token: "bC5jb20ifQ.TKw15NmLbSdIRwXWiu6UiMIudaCe5ecqyANNvA7YL"
         "400" :
           $ref : "#/components/responses/400"  
@@ -81,15 +84,20 @@ paths:
       requestBody:
         required: true
         content:
-          "application/json":
+          "multipart/form-data":
             schema:
-                $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/InsertUserObject"
             example:
-              username: "gibran"
+              username: "adidas"
               email: "adidas@gmail.com"
-              password: "123"
-              name: "adidas"
-              alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+              name: "adidas Feet"
+              phone: "08771079"
+              address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+              shop_name: "Adidas Store"
+              file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
+            encoding:
+              file:
+                contentType: image/png, image/jpeg       
       responses:
         "201":
           description: "Success create data"
@@ -101,11 +109,13 @@ paths:
                 message: "User successfully created"
                 data:
                   id: 1
-                  username: "gibran"
+                  username: "adidas"
                   email: "adidas@gmail.com"
-                  name: "adidas"
-                  alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
-
+                  name: "adidas Feet"
+                  phone: "08771079"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -123,18 +133,20 @@ paths:
         description: "Update user data"
         required: true
         content:
-          "application/json":
+          "multipart/form-data":
             schema:
-              $ref: "#/components/schemas/EditUserObject"
+              $ref: "#/components/schemas/InsertUserObject"
             example:
-              data:
-                email: "adidas@gmail.com"
-                password: "123"
-                name: "gibran"
-                phone: "089234324"
-                bio: "Nike"
-                gender : "male"
-                location : "Denpasar"
+              username: "adidas"
+              email: "adidas@gmail.com"
+              name: "adidas Feet"
+              phone: "08771079"
+              address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+              shop_name: "Adidas Store"
+              file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
+            encoding:
+              file:
+                contentType: image/png, image/jpeg     
       responses:
         '200':
           description: "Success update data"
@@ -146,12 +158,13 @@ paths:
                 message: "Success update data"
                 data:
                   id: 1
+                  username: "adidas"
                   email: "adidas@gmail.com"
-                  name: "gibran"
-                  phone: "089234324"
-                  bio: "nike"
-                  gender : "male"
-                  location : "Denpasar"
+                  name: "adidas Feet"
+                  phone: "08771079"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -1003,17 +1016,21 @@ components:
       properties:
         "id":
           type: integer
+        "username":
+          type: string
         "email":
+          type: string
+        "password":
           type: string
         "name":
           type: string
         "phone":
           type: string
-        "bio":
+        "address":
+          type: string    
+        "shop_name":
           type: string  
-        "gender":
-          type: string  
-        "location":
+        "image_url":
           type: string  
     "ArrayUserObj":
       type: array
@@ -1022,8 +1039,8 @@ components:
     "InsertUserObject":
       type: object
       properties:
-        "id":
-          type: integer
+        "username":
+          type: string
         "email":
           type: string
         "password":
@@ -1032,11 +1049,20 @@ components:
           type: string
         "phone":
           type: string
-        "bio":
+        "address":
           type: string    
+        "shop_name":
+          type: string    
+        "file":
+          type: string    
+          format: binary   
     "EditUserObject":
       type: object
       properties:
+        "id":
+          type: integer
+        "username":
+          type: string
         "email":
           type: string
         "password":
@@ -1045,12 +1071,13 @@ components:
           type: string
         "phone":
           type: string
-        "gender":
-          type: string
-        "location":
-          type: string
-        "bio":
-          type: string 
+        "address":
+          type: string    
+        "shop_name":
+          type: string    
+        "file":
+          type: string    
+          format: binary  
     "PostProductObject":
       type: object
       properties:
