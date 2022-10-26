@@ -193,25 +193,9 @@ paths:
 
   /users/username:
     get: 
-      security:
-        - bearerAuth: []
       summary: "Profil User"
       tags:
         - "User"
-      requestBody:
-        description: "Profile User"
-        required: true
-        content:
-          "application/json":
-            schema:
-              $ref: "#/components/schemas/EditUserObject"
-            example:
-              data:
-                id: 1
-                name: "gibran"
-                phone: "089234324"
-                recipient_address: "jalan buka hati"
-                shop_name: "kuda kencana"
       responses:
         "201":
           description: "Success Profile"
@@ -223,10 +207,13 @@ paths:
                 message: "User successfully Profile"
                 data:
                   id: 1
-                  name: "gibran"
-                  phone: "089234324"
-                  recipient_address: "jalan buka hati"
-                  shop_name: "kuda kencana"
+                  username: "adidas"
+                  email: "adidas@gmail.com"
+                  name: "adidas Feet"
+                  phone: "08771079"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -251,10 +238,13 @@ paths:
                 message: "User successfully Me"
                 data:
                   id: 1
-                  name: "gibran"
-                  phone: "089234324"
-                  recipient_address: "jalan buka hati"
-                  shop_name: "kuda kencana"
+                  username: "adidas"
+                  email: "adidas@gmail.com"
+                  name: "adidas Feet"
+                  phone: "08771079"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -279,11 +269,15 @@ paths:
             schema:
               $ref: "#/components/schemas/PostProductObject"
             example:
-              data:
-                product_name: "adidas"
-                price: 2.000.000
-                image_url: "link.ljasjlasjlalsja"
-                description: "good"
+              product_name: "Adidas Response Plus"
+              price: 2000000
+              description: |
+                Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
+              stock: 20
+              file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
+            encoding:
+              file:
+                contentType: image/png, image/jpeg                   
       responses:
         "201":
           description: "Success Post Product"
@@ -294,14 +288,19 @@ paths:
               example:
                 message: "Product successfully Post"
                 data:
-                  id_product: 1
-                  product_name: "adidas"
-                  price: 2.000.000
-                  image_url: "link.ljasjlasjlalsja"
-                  description: "good"
-                  shop_name: "adidas shop"
-                  is_sold: "true"
+                  id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  description: |
+                    Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
+                  stock: 20
+                  category: "style"
+                  shop_name: "Adidas Shop"
                   id_user_seller: 1
+              encoding:
+                file:
+                  contentType: image/png, image/jpeg  
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -312,6 +311,33 @@ paths:
       summary: "Get All date Product"
       tags:
         - "Product"
+      parameters:
+        - name: id_user_seller
+          in: query
+          description: "Id user as seller. Get product that sell by the user. If empty will get from all user."
+          required: false 
+          schema:
+            type: integer
+          examples:
+            1:
+              description: "User with id 1"
+              value: 1
+            2:
+              description: "User with id 2"
+              value: 2
+        - name: category
+          in: query
+          description: "Query Get Product using filter by category. If empty will get from all category. Input using lowercase"
+          required: false 
+          schema:
+            type: string
+          examples:
+            "style":
+              description: "Get Product filter by style category."
+              value: "style"
+            "books":
+              description: "Get Product filter by books category."
+              value: "style" 
       responses:
         "201":
           description: "Success Get All date Product"
@@ -322,14 +348,30 @@ paths:
               example:
                 message: "Get All Product successfully"
                 data:
-                  - id_product: 1
-                    product_name: "adidas"
-                    price: 2.000.000
-                    image_url: "link.ljasjlasjlalsja"
-                  - id_product: 2
-                    product_name: "diodora"
-                    price: 1.000.000
-                    image_url: "link.wkwkwkuakak"
+                - id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  description: |
+                    Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
+                  stock: 20
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_user_seller: 1
+                - id: 2
+                  product_name: "EQT Support ADV"
+                  price: 2299000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/toOfkrbLHI.jpg"
+                  description: |
+                    EQT Support ADV juga merupakan keluaran seri Originals atau jenis sneakers dari Adidas. Dengan perpaduan bahan mesh dan kulit sintetis, sepatu ini memberikan aksen kalem dan sporty, serta rasa nyaman bagi pemakainya. Sepatu yang memiliki nilai seharga Rp. 2.299.000 ini hadir dengan desain yang unik, sehingga memberi kesan spesial bagi sang pemakai. 
+                  stock: 20
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_user_seller: 1
+
+              encoding:
+                file:
+                  contentType: image/png, image/jpeg 
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -337,12 +379,64 @@ paths:
         '500':
           $ref: "#/components/responses/500"
   /products/{id}:
+    get:
+      summary: "Get data by id product"
+      tags:
+        - "Product"
+      parameters:
+      - name : id
+        in : path
+        description: "Id Product to get data"
+        required: true
+        schema :
+          type: integer
+        examples:
+          1 :
+            description: "Id product 1 "
+            value : 1
+      responses:
+        "200":
+          description: "Success Update Product"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResult"
+              example:
+                message: "Product successfully Post"
+                data:
+                  id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  description: |
+                    Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
+                  stock: 20
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_user_seller: 1
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
     put:
       security:
         - bearerAuth: []
       summary: "Update date Product"
       tags:
         - "Product"
+      parameters:
+      - name : id
+        in : path
+        description: "Id Product to update data"
+        required: true
+        schema :
+          type: integer
+        examples:
+          1 :
+            description: "Id product 1 "
+            value : 1
       requestBody:
         description: "Update date Product"
         required: true
@@ -352,12 +446,17 @@ paths:
               $ref: "#/components/schemas/PostProductObject"
             example:
               data:
-                product_name: "adidas"
-                price: 2.000.000
-                image_url: "link.ljasjlasjlalsja"
-                description: "good"
+                product_name: "Adidas Response Plus"
+                price: 2000000
+                description: |
+                  Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
+                stock: 20
+                file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
+            encoding:
+              file:
+                contentType: image/png, image/jpeg   
       responses:
-        "201":
+        "200":
           description: "Success Update Product"
           content:
             application/json:
@@ -366,13 +465,15 @@ paths:
               example:
                 message: "Product successfully Post"
                 data:
-                  id_product: 1
-                  product_name: "adidas"
-                  price: 2.000.000
-                  image_url: "link.ljasjlasjlalsja"
-                  description: "good"
-                  shop_name: "adidas shop"
-                  is_sold: "true"
+                  id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  description: |
+                    Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
+                  stock: 20
+                  category: "style"
+                  shop_name: "Adidas Shop"
                   id_user_seller: 1
         "400" :
           $ref : "#/components/responses/400"
@@ -401,7 +502,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessResult"
               example:
-                message: "Success Delete cart Data"
+                message: "Success Delete Product Data"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -414,11 +515,11 @@ paths:
     post:
       security:
         - bearerAuth: []
-      summary: "Post date Cart"
+      summary: "Post data Cart"
       tags:
         - "Cart"
       requestBody:
-        description: "Post date Cart"
+        description: "Post data Cart"
         required: true
         content:
           "application/json":
@@ -426,19 +527,20 @@ paths:
               $ref: "#/components/schemas/PostCartObject"
             example:
               data:
-                id_user: 1
+                product_name: "Adidas Response Plus"
+                price: 2000000
+                qty: 1
+                sub_total: 2000000
+                image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                notes: |
+                  Warna Biru
+                category: "style"
+                shop_name: "Adidas Shop"
                 id_product: 1
-                product_name: "adidas"
-                price: 2.000.000
-                qty: 3
-                sub_total: 30.000.000
-                image_url: "link.ljasjlasjlalsja"
-                notes: "good point"
-                shop_name: "adidas shop"
                 id_user_seller: 1
       responses:
         "201":
-          description: "Success Post date Cart"
+          description: "Success Post data Cart"
           content:
             application/json:
               schema:
@@ -446,46 +548,118 @@ paths:
               example:
                 message: "Post Cart successfully"
                 data:
-                  id_cart: 1
-                  shop_name: "adidas shop"
-                  is_checkout: 1
-                  id_user_seller: 2
+                - id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  qty: 1
+                  sub_total: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  notes: |
+                    Warna Biru
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_product: 1
+                  id_user_seller: 1
                   id_user_buyer: 2
-                  cart_detail:
-                    - id_cart_detail: 22
-                      id_cart: 1
-                      id_product: 2
-                      id_user: 1
-                      product_name: "adidas"
-                      price: 2.000.000
-                      qty: 3
-                      sub_total: 30.000.000
-                      image_url: "link.ljasjlasjlalsja"
-                      notes: "good point"
-                      shop_name: "adidas shop"
-                      id_user_buyer: 2
-                      id_user_seller: 2
-
-                    - id_cart_detail: 23
-                      id_cart: 2
-                      id_product: 3
-                      id_user: 1
-                      product_name: "nike"
-                      price: 3.000.000
-                      qty: 3
-                      sub_total: 30.000.000
-                      image_url: "link.kmakauaahaiol"
-                      notes: "good"
-                      shop_name: "nike shop"
-                      id_user_buyer: 3
-                      id_user_seller: 3
+                - id: 2
+                  product_name: "EQT Support ADV"
+                  price: 2299000
+                  qty: 1
+                  sub_total: 2299000                
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/toOfkrbLHI.jpg"
+                  notes: ""
+                  stock: 20
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_product: 2
+                  id_user_seller: 1
+                  id_user_buyer: 2
         "400" :
           $ref : "#/components/responses/400"
         "401" :
           $ref : "#/components/responses/401"   
         '500':
           $ref: "#/components/responses/500"
-
+  /mycarts:
+    get:
+      security:
+        - bearerAuth: []
+      summary: "Get all user cart data by user token"
+      tags:
+        - "Cart"
+      responses:
+        "200":
+          description: "Success Get user cart data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayResult"
+              example:
+                message: "Get Cart successfully"
+                data:
+                - id_user_seller: 1
+                  shop_name: "Adidas Shop"
+                  items:
+                  - id: 1
+                    product_name: "Adidas Response Plus"
+                    price: 2000000
+                    qty: 1
+                    sub_total: 2000000
+                    image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                    notes: |
+                      Warna Biru
+                    category: "style"
+                    shop_name: "Adidas Shop"
+                    id_product: 1
+                    id_user_seller: 1
+                    id_user_buyer: 2   
+                  - id: 2
+                    product_name: "EQT Support ADV"
+                    price: 2299000
+                    qty: 1
+                    sub_total: 2299000                
+                    image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/toOfkrbLHI.jpg"
+                    notes: ""
+                    stock: 20
+                    category: "style"
+                    shop_name: "Adidas Shop"
+                    id_product: 2
+                    id_user_seller: 1
+                    id_user_buyer: 2          
+                - id_user_seller: 2
+                  shop_name: "Mangga Dua Computer Shop"
+                  items:
+                  - id: 3
+                    product_name: "KLEVV SO-DIMM DDR4 Value Series PC25600 3200MHZ 8GB"
+                    price: 380000
+                    qty: 1
+                    sub_total: 380000
+                    image_url: "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/8/16/ceeb8319-5231-4e5b-bdc9-335330bd0078.jpg"
+                    notes: ""
+                    category: "tech"
+                    shop_name: "Mangga Dua Computer Shop"
+                    id_product: 3
+                    id_user_seller: 3
+                    id_user_buyer: 2   
+                  - id: 4
+                    product_name: "GALAX SONAR-04 Wired Gaming Headset - USB 7.1 Channel RGB"
+                    price: 495000
+                    qty: 1
+                    sub_total: 495000                
+                    image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/toOfkrbLHI.jpghttps://ecs7.tokopedia.net/img/cache/700/VqbcmM/2022/2/14/858492fc-5b10-4eb1-8782-fa28cb61911a.jpg"
+                    notes: ""
+                    stock: 20
+                    category: "tech"
+                    shop_name: "Mangga Dua Computer Shop"
+                    id_product: 4
+                    id_user_seller: 3
+                    id_user_buyer: 2          
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
   /carts/{id}:
     get:
       security:
@@ -497,7 +671,7 @@ paths:
           required: true
           schema:
             type: integer
-      summary: "Get date Cart"
+      summary: "Get data Cart"
       tags:
         - "Cart"
       responses:
@@ -510,46 +684,81 @@ paths:
               example:
                 message: "Get Cart successfully"
                 data:
-                  id_cart: 1
-                  shop_name: "adidas shop"
-                  is_checkout: 1
-                  id_user_seller: 2
+                  id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  qty: 1
+                  sub_total: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  notes: |
+                    Warna Biru
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_product: 1
+                  id_user_seller: 1
                   id_user_buyer: 2
-                  cart_detail:
-                    - id_cart_detail: 22
-                      id_cart: 1
-                      id_product: 2
-                      id_user: 1
-                      product_name: "adidas"
-                      price: 2.000.000
-                      qty: 3
-                      sub_total: 30.000.000
-                      image_url: "link.ljasjlasjlalsja"
-                      notes: "good point"
-                      shop_name: "adidas shop"
-                      id_user_buyer: 2
-                      id_user_seller: 2
-
-                    - id_cart_detail: 23
-                      id_cart: 2
-                      id_product: 3
-                      id_user: 1
-                      product_name: "nike"
-                      price: 3.000.000
-                      qty: 3
-                      sub_total: 30.000.000
-                      image_url: "link.kmakauaahaiol"
-                      notes: "good"
-                      shop_name: "nike shop"
-                      id_user_buyer: 3
-                      id_user_seller: 3
         "400" :
           $ref : "#/components/responses/400"
         "401" :
           $ref : "#/components/responses/401"   
         '500':
           $ref: "#/components/responses/500"
-
+    put:
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: "ID cart detail parameter"
+          required: true
+          schema:
+            type: integer
+      summary: "Update data Cart detail"
+      tags:
+        - "Cart"
+      requestBody:
+        description: "Update data Cart"
+        required: true
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/PostCartObject"
+            example:
+              data:
+                id: 1
+                qty: 1
+                sub_total: 2000000
+                notes: |
+                  Warna Biru
+      responses:
+        "201":
+          description: "Success update Cart detail"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayResult"
+              example:
+                message: "Update Cart detail successfully"
+                data:
+                  id: 1
+                  product_name: "Adidas Response Plus"
+                  price: 2000000
+                  qty: 1
+                  sub_total: 2000000
+                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                  notes: |
+                    Warna Biru
+                  category: "style"
+                  shop_name: "Adidas Shop"
+                  id_product: 1
+                  id_user_seller: 1
+                  id_user_buyer: 1
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
     delete:
       security:
         - bearerAuth: []
@@ -579,107 +788,15 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /carts_detail/{id}:
-    put:
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: "ID cart detail parameter"
-          required: true
-          schema:
-            type: integer
-      summary: "Update data Cart detail"
-      tags:
-        - "Cart"
-      requestBody:
-          description: "Update data cart detail"
-          required: true
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/PostCartObject"
-              example:
-                data:
-                  id_cart_detail: 22
-                  notes: "good point"
-      responses:
-        "201":
-          description: "Success update Cart detail"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
-              example:
-                message: "Update Cart detail successfully"
-                data:
-                    id_cart_detail: 22
-                    id_cart: 1
-                    id_product: 2
-                    id_user: 1
-                    product_name: "adidas"
-                    price: 2.000.000
-                    qty: 3
-                    sub_total: 30.000.000
-                    image_url: "link.ljasjlasjlalsja"
-                    notes: "good point"
-                    shop_name: "adidas shop"
-                    id_user_buyer: 2
-                    id_user_seller: 2
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"   
-        '500':
-          $ref: "#/components/responses/500"
-
-    delete:
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: "ID cart detail parameter"
-          required: true
-          schema:
-            type: integer
-      summary: "Delete cart detail data"
-      tags:
-        - "Cart"
-      responses:
-        "200":
-          description: "Success Delete cart detail Data"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResult"
-              example:
-                message: "Success Delete cart detail Data"
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"   
-        '500':
-          $ref: "#/components/responses/500"
-
   ######### ORDER #########
 
-  /order/{id_checkout}:
+  /order/:
     post:
       security:
         - bearerAuth: []
-      parameters:
-        - name: id_user_buyer
-                id_user_seller
-                
-          in: path
-          required: true
-          schema:
-            type: integer
-      summary: "Post data Order"
+      summary: "Insert new order"
       tags:
-        - "Order"
+        - "Cart"
       requestBody:
           description: "Post data Order"
           required: true
@@ -689,8 +806,6 @@ paths:
                 $ref: "#/components/schemas/PostOrdertObject"
               example:
                 data:
-                  id_order: 1
-                  id_user_buyer: 2
                   id_user_seller: 3
                   shipping_name: "luky"
                   shipping_address: "Jakarta"
@@ -841,7 +956,7 @@ components:
     "PostProductObject":
       type: object
       properties:
-        "id_product":
+        "id":
           type: integer
         "product_name":
           type: string
@@ -860,7 +975,7 @@ components:
     "PostCartObject":
       type: object
       properties:
-        "id_product":
+        "id":
           type: integer
         "product_name":
           type: string
@@ -881,7 +996,7 @@ components:
     "PostCheckoutObject":
       type: object
       properties:
-        "id_product":
+        "id":
           type: integer
         "product_name":
           type: string
