@@ -25,8 +25,6 @@ tags:
     description:  API mengelola fitur Product  
   - name: Cart
     description:  API mengelola fitur Cart
-  - name: Checkout
-    description:  API mengelola fitur Checkout
   - name: Order
     description:  API mengelola fitur Order
   
@@ -63,10 +61,13 @@ paths:
                 message: "Login Success"
                 data:
                   id: 1
+                  username: "adidas"
                   email: "adidas@gmail.com"
-                  name: "adidas"
+                  name: "adidas Feet"
                   phone: "08771079"
-                  bio: "Adidas"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
                   token: "bC5jb20ifQ.TKw15NmLbSdIRwXWiu6UiMIudaCe5ecqyANNvA7YL"
         "400" :
           $ref : "#/components/responses/400"  
@@ -81,15 +82,20 @@ paths:
       requestBody:
         required: true
         content:
-          "application/json":
+          "multipart/form-data":
             schema:
-                $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/InsertUserObject"
             example:
-              username: "gibran"
+              username: "adidas"
               email: "adidas@gmail.com"
-              password: "123"
-              name: "adidas"
-              alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+              name: "adidas Feet"
+              phone: "08771079"
+              address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+              shop_name: "Adidas Store"
+              file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
+            encoding:
+              file:
+                contentType: image/png, image/jpeg       
       responses:
         "201":
           description: "Success create data"
@@ -101,11 +107,13 @@ paths:
                 message: "User successfully created"
                 data:
                   id: 1
-                  username: "gibran"
+                  username: "adidas"
                   email: "adidas@gmail.com"
-                  name: "adidas"
-                  alamat_pengiriman: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
-
+                  name: "adidas Feet"
+                  phone: "08771079"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -123,18 +131,20 @@ paths:
         description: "Update user data"
         required: true
         content:
-          "application/json":
+          "multipart/form-data":
             schema:
-              $ref: "#/components/schemas/EditUserObject"
+              $ref: "#/components/schemas/InsertUserObject"
             example:
-              data:
-                email: "adidas@gmail.com"
-                password: "123"
-                name: "gibran"
-                phone: "089234324"
-                bio: "Nike"
-                gender : "male"
-                location : "Denpasar"
+              username: "adidas"
+              email: "adidas@gmail.com"
+              name: "adidas Feet"
+              phone: "08771079"
+              address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+              shop_name: "Adidas Store"
+              file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
+            encoding:
+              file:
+                contentType: image/png, image/jpeg     
       responses:
         '200':
           description: "Success update data"
@@ -146,12 +156,13 @@ paths:
                 message: "Success update data"
                 data:
                   id: 1
+                  username: "adidas"
                   email: "adidas@gmail.com"
-                  name: "gibran"
-                  phone: "089234324"
-                  bio: "nike"
-                  gender : "male"
-                  location : "Denpasar"
+                  name: "adidas Feet"
+                  phone: "08771079"
+                  address: "jl.gunung anthena 1 no 11a, denpasar barat, Bali"
+                  shop_name: "Adidas Store"
+                  image_url: "https://upload.wikimedia.org/wikipedia/commons/f/fe/Logo_Adidas.png"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -180,45 +191,6 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /users/{email}:
-    get:
-      security:
-        - bearerAuth: []    
-      summary: "User Data"
-      tags:
-      - "User"
-      parameters:
-        - name: email
-          in: path
-          description: "Email parameter"
-          required: true
-          schema:
-            type: string
-          examples:
-            email: 
-              value: "cecep@gmail.com"
-      responses:
-        "200":
-          description: "Success Get Data"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResult"
-              example:
-                message: "Success Get Data"
-                data:
-                  id: 1
-                  email: "boby@gmail.com"
-                  name: "boby"
-                  phone: "089234324"
-                  bio: "nike and adidas"
-                  is_active: true            
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"
-        "500" :
-          $ref : "#/components/responses/500"
   /users/username:
     get: 
       security:
@@ -364,7 +336,7 @@ paths:
           $ref : "#/components/responses/401"   
         '500':
           $ref: "#/components/responses/500"
-  /products/:id:
+  /products/{id}:
     put:
       security:
         - bearerAuth: []
@@ -454,6 +426,7 @@ paths:
               $ref: "#/components/schemas/PostCartObject"
             example:
               data:
+                id_user: 1
                 id_product: 1
                 product_name: "adidas"
                 price: 2.000.000
@@ -482,6 +455,7 @@ paths:
                     - id_cart_detail: 22
                       id_cart: 1
                       id_product: 2
+                      id_user: 1
                       product_name: "adidas"
                       price: 2.000.000
                       qty: 3
@@ -495,6 +469,7 @@ paths:
                     - id_cart_detail: 23
                       id_cart: 2
                       id_product: 3
+                      id_user: 1
                       product_name: "nike"
                       price: 3.000.000
                       qty: 3
@@ -511,7 +486,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /carts/:id:
+  /carts/{id}:
     get:
       security:
         - bearerAuth: []
@@ -544,6 +519,7 @@ paths:
                     - id_cart_detail: 22
                       id_cart: 1
                       id_product: 2
+                      id_user: 1
                       product_name: "adidas"
                       price: 2.000.000
                       qty: 3
@@ -557,6 +533,7 @@ paths:
                     - id_cart_detail: 23
                       id_cart: 2
                       id_product: 3
+                      id_user: 1
                       product_name: "nike"
                       price: 3.000.000
                       qty: 3
@@ -602,7 +579,7 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /carts_detail/:id:
+  /carts_detail/{id}:
     put:
       security:
         - bearerAuth: []
@@ -640,6 +617,7 @@ paths:
                     id_cart_detail: 22
                     id_cart: 1
                     id_product: 2
+                    id_user: 1
                     product_name: "adidas"
                     price: 2.000.000
                     qty: 3
@@ -685,231 +663,16 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-######## CHECKOUT #########
-
-  /checkouts/:id:
-    post:
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id_carts
-          in: path
-          description: "ID cart parameter"
-          required: true
-          schema:
-            type: integer
-      summary: "Post data checkout"
-      tags:
-        - "Checkout"
-      requestBody:
-          description: "Post data checkout"
-          required: true
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/PostCheckoutObject"
-              example:
-                data:
-                  id_carts: 22
-      responses:
-        "201":
-          description: "Success Post date checkout"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
-              example:
-                message: "Post checkout successfully"
-                data:
-                  id_checkout: 1
-                  recipient_name: "iqbal"
-                  recipient_phone: 08990870
-                  recipient_address: "jl.pegangsaan timur, jakarta"
-                  sub_total: 3.000.000
-                  shop_name: "adidas shop"
-                  id_cart: 1
-                  id_user_buyer: 2
-                  id_user_seller: 2
-                  cart_detail:
-                    - id_cart_detail: 22
-                      product_name: "adidas"
-                      price: 2.000.000
-                      notes: "good point"
-                      image_url: "link.ljasjlasjlalsja"
-                      qty: 3
-                      sub_total: 30.000.000
-                    - id_cart_detail: 23
-                      product_name: "nike"
-                      price: 3.000.000
-                      notes: "good"
-                      image_url: "link.kmakauaahaiol"
-                      qty: 3
-                      sub_total: 30.000.000
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"   
-        '500':
-          $ref: "#/components/responses/500"
-
-    get:
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id_checkout
-          in: path
-          description: "ID cart checkout parameter"
-          required: true
-          schema:
-            type: integer
-      summary: "Get data checkout"
-      tags:
-        - "Checkout"
-      responses:
-        "201":
-          description: "Success Post date checkout"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
-              example:
-                message: "Post checkout successfully"
-                data:
-                  id_checkout: 1
-                  recipient_name: "iqbal"
-                  recipient_phone: 08990870
-                  recipient_address: "jl.pegangsaan timur, jakarta"
-                  sub_total: 3.000.000
-                  shop_name: "adidas shop"
-                  is_paid: "(true,false)"
-                  id_cart: 1
-                  id_user_buyer: 2
-                  id_user_seller: 2
-                  cart_detail:
-                    - id_cart_detail: 22
-                      product_name: "adidas"
-                      price: 2.000.000
-                      notes: "good point"
-                      image_url: "link.ljasjlasjlalsja"
-                      qty: 3
-                      sub_total: 30.000.000
-                    - id_cart_detail: 23
-                      product_name: "nike"
-                      price: 3.000.000
-                      notes: "good"
-                      image_url: "link.kmakauaahaiol"
-                      qty: 3
-                      sub_total: 30.000.000
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"   
-        '500':
-          $ref: "#/components/responses/500"
-    put:
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id_checkout
-          in: path
-          required: true
-          schema:
-            type: integer
-      summary: "Update data checkout"
-      tags:
-        - "Checkout"
-      requestBody:
-          description: "Update data checkout"
-          required: true
-          content:
-            "application/json":
-              schema:
-                $ref: "#/components/schemas/PostCheckoutObject"
-              example:
-                data:
-                  id_checkout: 1
-                  recipient_name: "iqbal"
-                  recipient_phone: 08990870
-                  recipient_address: "jl.pegangsaan timur, jakarta"
-      responses:
-        "201":
-          description: "Success Update date checkout"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
-              example:
-                message: "Update checkout successfully"
-                data:
-                  id_checkout: 1
-                  recipient_name: "iqbal"
-                  recipient_phone: 08990870
-                  recipient_address: "jl.pegangsaan timur, jakarta"
-                  sub_total: 3.000.000
-                  shop_name: "adidas shop"
-                  id_cart: 1
-                  id_user_buyer: 2
-                  id_user_seller: 2
-                  cart_detail:
-                    - id_cart_detail: 22
-                      product_name: "adidas"
-                      price: 2.000.000
-                      notes: "good point"
-                      image_url: "link.ljasjlasjlalsja"
-                      qty: 3
-                      sub_total: 30.000.000
-                    - id_cart_detail: 23
-                      product_name: "nike"
-                      price: 3.000.000
-                      notes: "good"
-                      image_url: "link.kmakauaahaiol"
-                      qty: 3
-                      sub_total: 30.000.000
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"   
-        '500':
-          $ref: "#/components/responses/500"
-    delete:
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id_checkout
-          in: path
-          description: "ID checkout parameter"
-          required: true
-          schema:
-            type: integer
-      summary: "Delete checkout detail data"
-      tags:
-        - "Checkout"
-      responses:
-        "200":
-          description: "Success Delete checkout Data"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResult"
-              example:
-                message: "Success Delete checkout Data"
-        "400" :
-          $ref : "#/components/responses/400"
-        "401" :
-          $ref : "#/components/responses/401"   
-        '500':
-          $ref: "#/components/responses/500"
-  
   ######### ORDER #########
 
-  /order/:id_checkout:
+  /order/{id_checkout}:
     post:
       security:
         - bearerAuth: []
       parameters:
-        - name: id_checkout
-                id_user_buyer
+        - name: id_user_buyer
                 id_user_seller
+                
           in: path
           required: true
           schema:
@@ -926,11 +689,15 @@ paths:
                 $ref: "#/components/schemas/PostOrdertObject"
               example:
                 data:
-                  id_checkout: 1
-                  sub_total: 3
+                  id_order: 1
+                  id_user_buyer: 2
+                  id_user_seller: 3
                   shipping_name: "luky"
-                  shipping_cost: 18.000
+                  shipping_address: "Jakarta"
+                  shipping_phone: 088280020
+                  shop_name: "kuda laut"
                   gross_ammount: 3
+                  order_status: true
       responses:
         "201":
           description: "Success Post date Order"
@@ -942,11 +709,14 @@ paths:
                 message: "Post date Order successfully"
                 data:
                   id_order: 1
-                  sub_total: 3
+                  id_user_buyer: 2
+                  id_user_seller: 3
                   shipping_name: "luky"
-                  shipping_cost: 18.000
+                  shipping_address: "Jakarta"
+                  shipping_phone: 088280020
+                  shop_name: "kuda laut"
                   gross_ammount: 3
-                  id_checkout: 1
+                  order_status: true
                   snap_token: "jsjallslasjlasyisbdmdamdh"
         "400" :
           $ref : "#/components/responses/400"
@@ -955,12 +725,12 @@ paths:
         '500':
           $ref: "#/components/responses/500"
 
-  /orders/:id:
+  /orders/{id}:
     get:
       security:
         - bearerAuth: []
       parameters:
-        - name: id_checkout
+        - name: id_order
           in: path
           required: true
           schema:
@@ -979,11 +749,14 @@ paths:
                 message: "Get date Order successfully"
                 data:
                   id_order: 1
-                  sub_total: 3
+                  id_user_buyer: 2
+                  id_user_seller: 3
                   shipping_name: "luky"
-                  shipping_cost: 18.000
+                  shipping_address: "Jakarta"
+                  shipping_phone: 088280020
+                  shop_name: "kuda laut"
                   gross_ammount: 3
-                  id_checkout: 1
+                  order_status: true
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -1003,17 +776,21 @@ components:
       properties:
         "id":
           type: integer
+        "username":
+          type: string
         "email":
+          type: string
+        "password":
           type: string
         "name":
           type: string
         "phone":
           type: string
-        "bio":
+        "address":
+          type: string    
+        "shop_name":
           type: string  
-        "gender":
-          type: string  
-        "location":
+        "image_url":
           type: string  
     "ArrayUserObj":
       type: array
@@ -1022,8 +799,8 @@ components:
     "InsertUserObject":
       type: object
       properties:
-        "id":
-          type: integer
+        "username":
+          type: string
         "email":
           type: string
         "password":
@@ -1032,11 +809,20 @@ components:
           type: string
         "phone":
           type: string
-        "bio":
+        "address":
           type: string    
+        "shop_name":
+          type: string    
+        "file":
+          type: string    
+          format: binary   
     "EditUserObject":
       type: object
       properties:
+        "id":
+          type: integer
+        "username":
+          type: string
         "email":
           type: string
         "password":
@@ -1045,12 +831,13 @@ components:
           type: string
         "phone":
           type: string
-        "gender":
-          type: string
-        "location":
-          type: string
-        "bio":
-          type: string 
+        "address":
+          type: string    
+        "shop_name":
+          type: string    
+        "file":
+          type: string    
+          format: binary  
     "PostProductObject":
       type: object
       properties:
