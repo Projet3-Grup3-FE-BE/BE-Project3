@@ -15,9 +15,10 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   # Added by API Auto Mocking Plugin
+  - description: Base URL Server AWS
+    url: http://54.179.170.113:8000
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/LukmanNgoding/ecommerce_project3/1.0.0
-  - url: 'https://petstore.swagger.io/v2'
+    url: https://virtserver.swaggerhub.com/Project3Team3/OpenAPI_Project3/1.0.0
 tags:
   - name: User #login, register, lihat profile user, update profile user, delelte profile (non aktif dgn delete gorm)
     description: API mengelola fitur User  
@@ -80,6 +81,7 @@ paths:
       tags:
       - "User"
       requestBody:
+        description: "Register User"
         required: true
         content:
           "multipart/form-data":
@@ -128,12 +130,12 @@ paths:
       tags:
         - "User"
       requestBody:
-        description: "Update user data"
+        description: "Update user data. Request body tidak membutuhkan id user, karena akan diambil dari token."
         required: true
         content:
           "multipart/form-data":
             schema:
-              $ref: "#/components/schemas/InsertUserObject"
+              $ref: "#/components/schemas/EditUserObject"
             example:
               username: "adidas"
               email: "adidas@gmail.com"
@@ -194,10 +196,11 @@ paths:
   /users/username:
     get: 
       summary: "Profil User"
+      description: "Menggunakan username untuk mencari profil user. Dapat diakses tanpa token."
       tags:
         - "User"
       responses:
-        "201":
+        "200":
           description: "Success Profile"
           content:
             application/json:
@@ -224,11 +227,12 @@ paths:
     get:
       security:
         - bearerAuth: []
-      summary: "Get me date User (token)"
+      summary: "Get me data User."
+      description: "Menampilkan data profil user yang sedang login. Membutuhkan Token."
       tags:
         - "User"
       responses:
-        "201":
+        "200":
           description: "Success User Me"
           content:
             application/json:
@@ -258,22 +262,23 @@ paths:
     post:
       security:
         - bearerAuth: []
-      summary: "Post date Product"
+      summary: "Post data Product"
       tags:
         - "Product"
       requestBody:
-        description: "Post date Product"
+        description: "Post data Product tanpa id user yang input(seller) dan shop name karena akan diambil dari token."
         required: true
         content:
-          "application/json":
+          "multipart/form-data":
             schema:
-              $ref: "#/components/schemas/PostProductObject"
+              $ref: "#/components/schemas/InsertProductObject"
             example:
               product_name: "Adidas Response Plus"
               price: 2000000
               description: |
                 Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
               stock: 20
+              category: "style"
               file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
             encoding:
               file:
@@ -308,17 +313,20 @@ paths:
         '500':
           $ref: "#/components/responses/500"
     get:
-      summary: "Get All date Product"
+      summary: "Get All data Product"
       tags:
         - "Product"
       parameters:
         - name: id_user_seller
           in: query
-          description: "Id user as seller. Get product that sell by the user. If empty will get from all user."
+          description: "Id user as seller. Get product that sell by 1 user. If empty will get from all user."
           required: false 
           schema:
             type: integer
-          examples:
+          examples:            
+            "":
+              description: "no id parameter"
+              value: 
             1:
               description: "User with id 1"
               value: 1
@@ -327,11 +335,14 @@ paths:
               value: 2
         - name: category
           in: query
-          description: "Query Get Product using filter by category. If empty will get from all category. Input using lowercase"
+          description: "Query Get Product using filter by 1 category. If empty will get from all category. Input using lowercase"
           required: false 
           schema:
             type: string
           examples:
+            "":
+              description: "no category parameter"
+              value: 
             "style":
               description: "Get Product filter by style category."
               value: "style"
@@ -339,12 +350,12 @@ paths:
               description: "Get Product filter by books category."
               value: "style" 
       responses:
-        "201":
-          description: "Success Get All date Product"
+        "200":
+          description: "Success Get All data Product"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccesArrayProductResult"
               example:
                 message: "Get All Product successfully"
                 data:
@@ -423,7 +434,7 @@ paths:
     put:
       security:
         - bearerAuth: []
-      summary: "Update date Product"
+      summary: "Update data Product"
       tags:
         - "Product"
       parameters:
@@ -438,12 +449,12 @@ paths:
             description: "Id product 1 "
             value : 1
       requestBody:
-        description: "Update date Product"
+        description: "Update data Product"
         required: true
         content:
-          "application/json":
+          "multipart/form-data":
             schema:
-              $ref: "#/components/schemas/PostProductObject"
+              $ref: "#/components/schemas/EditProductObject"
             example:
               data:
                 product_name: "Adidas Response Plus"
@@ -451,6 +462,7 @@ paths:
                 description: |
                   Adidas Response Plus bisa jadi pilihan buat kamu yang senang lari sore di taman sekitar rumah. Menggunakan bahan air mesh, sepatu yang dibanderol dengan harga Rp. 1.599.000 ini mengedepankan fitur sirkulasi udara untuk kaki kamu biar terus terasa nyaman dan nggak gampang berkeringat. Selain itu, outsole-nya menggunakan teknologi Stretchweb yang menyesuaikan pergerakan kaki kamu ketika memijak. 
                 stock: 20
+                category: "style"                
                 file: "9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUExQVFRUWGRwaGBgYGB0dGxkcHxccGxocGxoYHCYgGxojHBsdHy8gJCgpLSwsGB4xNTAqNSYrLCkBCQoKDgwOGg8PGiklHx8pLCwpKSkpKSwpLCkpKSwpLCksKSwsLCkpKSkpLCkpKSwpLCwsKSwsLCksKSkpKSksKf/AABEIAJ0BQQMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAEBQIDBgEABwj/xABFEAACAQIEBAQDBgMGAwcFAAABAhEDIQAEEjEFQVFhBhMicTKBkRRCobHB8CNS0QcVM1Ni4RaS8TRygpOiwtIkQ1RVY//EABoBAAIDA."
             encoding:
               file:
@@ -524,31 +536,30 @@ paths:
         content:
           "application/json":
             schema:
-              $ref: "#/components/schemas/PostCartObject"
+              $ref: "#/components/schemas/InsertCartObject"
             example:
-              data:
-                product_name: "Adidas Response Plus"
-                price: 2000000
-                qty: 1
-                sub_total: 2000000
-                image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
-                notes: |
-                  Warna Biru
-                category: "style"
-                shop_name: "Adidas Shop"
-                id_product: 1
-                id_user_seller: 1
+              product_name: "Adidas Response Plus"
+              price: 2000000
+              qty: 1
+              sub_total: 2000000
+              image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+              notes: |
+                Warna Biru
+              category: "style"
+              shop_name: "Adidas Shop"
+              id_product: 1
+              id_user_seller: 1
       responses:
         "201":
           description: "Success Post data Cart"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccessResult"
               example:
                 message: "Post Cart successfully"
                 data:
-                - id: 1
+                  id: 1
                   product_name: "Adidas Response Plus"
                   price: 2000000
                   qty: 1
@@ -561,19 +572,6 @@ paths:
                   id_product: 1
                   id_user_seller: 1
                   id_user_buyer: 2
-                - id: 2
-                  product_name: "EQT Support ADV"
-                  price: 2299000
-                  qty: 1
-                  sub_total: 2299000                
-                  image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/toOfkrbLHI.jpg"
-                  notes: ""
-                  stock: 20
-                  category: "style"
-                  shop_name: "Adidas Shop"
-                  id_product: 2
-                  id_user_seller: 1
-                  id_user_buyer: 2
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -584,16 +582,17 @@ paths:
     get:
       security:
         - bearerAuth: []
-      summary: "Get all user cart data by user token"
+      summary: "Get all user cart data by user token. Must login."
+      description: "Show all cart items from user that logged in."
       tags:
         - "Cart"
       responses:
         "200":
-          description: "Success Get user cart data"
+          description: "Success Get user cart data. Show data group by Shop Name/Seller."
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccesArrayCartResult"
               example:
                 message: "Get Cart successfully"
                 data:
@@ -675,12 +674,12 @@ paths:
       tags:
         - "Cart"
       responses:
-        "201":
-          description: "Success Get date Cart"
+        "200":
+          description: "Success Get data Cart"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccessResult"
               example:
                 message: "Get Cart successfully"
                 data:
@@ -722,21 +721,20 @@ paths:
         content:
           "application/json":
             schema:
-              $ref: "#/components/schemas/PostCartObject"
+              $ref: "#/components/schemas/EditCartObject"
             example:
-              data:
-                id: 1
-                qty: 1
-                sub_total: 2000000
-                notes: |
-                  Warna Biru
+              id: 1
+              qty: 1
+              sub_total: 2000000
+              notes: |
+                Warna Biru
       responses:
-        "201":
+        "200":
           description: "Success update Cart detail"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccessResult"
               example:
                 message: "Update Cart detail successfully"
                 data:
@@ -790,88 +788,223 @@ paths:
 
   ######### ORDER #########
 
-  /order/:
+  /orders/:
     post:
       security:
         - bearerAuth: []
       summary: "Insert new order"
+      description: "Ketika hit endpoint ini akan menjalankan proses ke midtrans."
       tags:
-        - "Cart"
+        - "Order"
       requestBody:
-          description: "Post data Order"
+          description: |
+            Insert data Order. Id user buyer (yang login) tidak perlu disertakan. Akan ambil dari token.\n
+            Response Status ketika Order > \n
+            Order_status : \n
+              null = baru klik checkout; \n
+              process_order = saat klik bayar; \n
+              process_payment = saat proses midtrans; \n
+              complete_payment = status code dr midtrans 200; \n
+              pending_payment = status code midtrans 201; \n
+              failed_payment = status code lain; \n
+              complete_order = klik finish atau confirm dr BE atau confirm user? \n
+            Respons dari midtrans > \n
+              snap_token \n
           required: true
           content:
             "application/json":
               schema:
-                $ref: "#/components/schemas/PostOrdertObject"
+                $ref: "#/components/schemas/InsertOrdertObject"
               example:
-                data:
-                  id_user_seller: 3
-                  shipping_name: "luky"
-                  shipping_address: "Jakarta"
-                  shipping_phone: 088280020
-                  shop_name: "kuda laut"
-                  gross_ammount: 3
-                  order_status: true
+                shipping_name: "Luky"
+                shipping_phone: "088280020"
+                shipping_address: "Jakarta"
+                shop_name: "Adidas Shop"
+                gross_ammount: 2000000
+                id_user_seller: 1
+                id_user_buyer: 3
       responses:
         "201":
-          description: "Success Post date Order"
+          description: "Success Post data Order"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccessResult"
               example:
-                message: "Post date Order successfully"
+                message: "Post data Order successfully"
                 data:
-                  id_order: 1
+                  id: 1
+                  shipping_name: "Luky"
+                  shipping_phone: "088280020"
+                  shipping_address: "Jakarta"
+                  shop_name: "Adidas Shop"
+                  gross_ammount: 2000000
+                  order_status: "process_order"
+                  snap_token: "d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                  redirect_url: "https://app.sandbox.veritrans.co.id/snap/v2/vtweb/d379aa71-99eb-4dd1-b9bb-eefe813746e9"
                   id_user_buyer: 2
                   id_user_seller: 3
-                  shipping_name: "luky"
-                  shipping_address: "Jakarta"
-                  shipping_phone: 088280020
-                  shop_name: "kuda laut"
-                  gross_ammount: 3
-                  order_status: true
-                  snap_token: "jsjallslasjlasyisbdmdamdh"
         "400" :
           $ref : "#/components/responses/400"
         "401" :
           $ref : "#/components/responses/401"   
         '500':
           $ref: "#/components/responses/500"
+  /myorders:
+    get:
+      security:
+        - bearerAuth: []
+      summary: "Get data Order for buyer"
+      description: "Show all transaction that made by buyer user. Get id from extract token. Same id_user_buyer, different id_user_seller."
+      tags:
+        - "Order"
+      responses:
+        "200":
+          description: "Success Get data Order"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayOrderResult"
+              example:
+                message: "Get data Order successfully"
+                data:
+                  - id: 1
+                    id_user_buyer: 2
+                    id_user_seller: 3
+                    shipping_name: "Luky"
+                    shipping_phone: "088280020"
+                    shipping_address: "Jakarta"
+                    shop_name: "Adidas Shop"
+                    gross_ammount: 4000000
+                    order_status: "process_order"
+                    snap_token: "d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                    redirect_url: "https://app.sandbox.veritrans.co.id/snap/v2/vtweb/d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                  - id: 1
+                    id_user_buyer: 2
+                    id_user_seller: 4
+                    shipping_name: "Luky"
+                    shipping_phone: "088280020"
+                    shipping_address: "Jakarta"
+                    shop_name: "Mangga Dua store"
+                    gross_ammount: 9000000
+                    order_status: "complete_order"
+                    snap_token: "d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                    redirect_url: "https://app.sandbox.veritrans.co.id/snap/v2/vtweb/d379aa71-99eb-4dd1-b9bb-eefe813746e9"
 
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
+  /myshoporders:
+    get:
+      security:
+        - bearerAuth: []
+      summary: "Get data Order for seller."
+      description: "Show all transaction from seller shop. Get id user data from token. Same id_user_seller, different id_user_buyer."
+      tags:
+        - "Order"
+      responses:
+        "200":
+          description: "Success Get data shop orders."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccesArrayOrderResult"
+              example:
+                message: "Get data Order successfully"
+                data:
+                  - id: 1
+                    shipping_name: "Luky"
+                    shipping_phone: "088280020"
+                    shipping_address: "Jakarta"
+                    shop_name: "Adidas Shop"
+                    gross_ammount: 4000000
+                    order_status: "process_order"
+                    snap_token: "d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                    redirect_url: "https://app.sandbox.veritrans.co.id/snap/v2/vtweb/d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                    id_user_buyer: 2
+                    id_user_seller: 3
+                  - id: 2
+                    shipping_name: "Bambang"
+                    shipping_phone: "088280020"
+                    shipping_address: "Surabaya"
+                    shop_name: "Mangga Dua store"
+                    gross_ammount: 9000000
+                    order_status: "complete_order"
+                    snap_token: "d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                    redirect_url: "https://app.sandbox.veritrans.co.id/snap/v2/vtweb/d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                    id_user_buyer: 1
+                    id_user_seller: 3
+
+        "400" :
+          $ref : "#/components/responses/400"
+        "401" :
+          $ref : "#/components/responses/401"   
+        '500':
+          $ref: "#/components/responses/500"
   /orders/{id}:
     get:
       security:
         - bearerAuth: []
       parameters:
-        - name: id_order
+        - name: id
           in: path
           required: true
           schema:
             type: integer
-      summary: "Get data Order"
+      summary: "Get detail data Order by id order"
       tags:
         - "Order"
       responses:
-        "201":
-          description: "Success Get date Order"
+        "200":
+          description: "Success Get data Order"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SuccesArrayResult"
+                $ref: "#/components/schemas/SuccessResult"
               example:
-                message: "Get date Order successfully"
+                message: "Get data Order successfully"
                 data:
-                  id_order: 1
+                  id: 1
                   id_user_buyer: 2
                   id_user_seller: 3
-                  shipping_name: "luky"
+                  shipping_name: "Luky"
+                  shipping_phone: "088280020"
                   shipping_address: "Jakarta"
-                  shipping_phone: 088280020
-                  shop_name: "kuda laut"
-                  gross_ammount: 3
-                  order_status: true
+                  shop_name: "Adidas Shop"
+                  gross_ammount: 4000000
+                  order_status: "process_order"
+                  snap_token: "d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                  redirect_url: "https://app.sandbox.veritrans.co.id/snap/v2/vtweb/d379aa71-99eb-4dd1-b9bb-eefe813746e9"
+                  items:
+                  - id: 1
+                    product_name: "Adidas Response Plus"
+                    price: 2000000
+                    image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                    qty: 1
+                    sub_total: 2000000
+                    notes: |
+                      Warna Biru
+                    shop_name: "Adidas Shop"
+                    id_order: 2
+                    id_product: 1
+                    id_user_seller: 1
+                    id_user_buyer: 3
+                  - id: 2
+                    product_name: "EQT Support ADV"
+                    price: 2000000
+                    image_url: "https://ds393qgzrxwzn.cloudfront.net/resize/m720x480/cat1/img/images/0/ISzO90zLnp.jpg"
+                    qty: 1
+                    sub_total: 2000000
+                    notes: |
+                      Dark Blue
+                    shop_name: "Adidas Shop"
+                    id_order: 2
+                    id_product: 2
+                    id_user_seller: 1
+                    id_user_buyer: 3
         "400" :
           $ref : "#/components/responses/400"
         "401" :
@@ -894,8 +1027,6 @@ components:
         "username":
           type: string
         "email":
-          type: string
-        "password":
           type: string
         "name":
           type: string
@@ -953,113 +1084,238 @@ components:
         "file":
           type: string    
           format: binary  
-    "PostProductObject":
+    "InsertProductObject":
       type: object
       properties:
-        "id":
-          type: integer
         "product_name":
           type: string
         "price":
           type: integer
-        "image_url":
-          type: string
         "description":
           type: string
-        "shop_name":
-          type: string
-        "is_sold":
-          type: string
-        "id_user_seller":
-          type: string
-    "PostCartObject":
-      type: object
-      properties:
-        "id":
-          type: integer
-        "product_name":
-          type: string
-        "price":
-          type: integer
-        "qty":
-          type: integer
-        "sub_total":
-          type: integer
         "image_url":
           type: string
-        "notes":
-          type: string
-        "shop_name":
-          type: string
-        "id_user_seller":
-          type: string
-    "PostCheckoutObject":
-      type: object
-      properties:
-        "id":
+        "stock":
           type: integer
-        "product_name":
+        "category":
           type: string
-        "price":
-          type: integer
-        "qty":
-          type: integer
-        "sub_total":
-          type: string
-        "image_url":
-          type: string
-        "notes":
-          type: string
-        "shop_name":
-          type: string
-        "id_user_seller":
-          type: string
-    "PostOrdertObject":
-      type: object
-      properties:
-        "id_checkout ":
-          type: integer
-        "sub_total":
-          type: string
-        "shipping_name":
-          type: string
-        "shipping_cost":
-          type: integer
-        "gross_ammount":
-          type: integer
-    "CommentObject":
-      type: object
-      properties:
-        "id":
-          type: integer
-        "name":
-          type: integer
-        "comment_value":
-          type: string
-        "id_user":
-          type: integer
-        "id_posting":
-          type: string
-    "InsertCommentObject":
-      type: object
-      properties:
-        "name":
-          type: string
-        "comment_value":
-          type: string
-        "id_user":
-          type: integer
-        "id_posting":
-          type: string  
-    "EditCommentObject":
-      type: object
-      properties:
-        "comment_value":
+        "file":
           type: string    
-    "ArrCommentObject":
+          format: binary 
+    "EditProductObject":
+      type: object
+      properties:
+        "id":
+          type: integer      
+        "product_name":
+          type: string
+        "price":
+          type: integer
+        "description":
+          type: string
+        "image_url":
+          type: string
+        "stock":
+          type: integer
+        "category":
+          type: string
+        "file":
+          type: string    
+          format: binary 
+    "ProductObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "product_name":
+          type: string
+        "price":
+          type: integer
+        "description":
+          type: string
+        "image_url":
+          type: string
+        "stock":
+          type: integer
+        "category":
+          type: string
+        "shop_name":
+          type: string
+        "id_user_seller":
+          type: string
+    "ArrProductObject":
       type: array
       items:
-        $ref: "#/components/schemas/CommentObject"    
+        $ref: "#/components/schemas/ProductObject"   
+    "InsertCartObject":
+      type: object
+      properties:
+        "product_name":
+          type: string
+        "price":
+          type: integer
+        "qty":
+          type: integer
+        "sub_total":
+          type: integer
+        "image_url":
+          type: string
+        "notes":
+          type: string
+        "category":
+          type: string
+        "shop_name":
+          type: string
+        "id_product":
+          type: string
+        "id_user_seller":
+          type: string
+    "EditCartObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "qty":
+          type: integer
+        "sub_total":
+          type: integer
+        "notes":
+          type: string
+    "CartObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "product_name":
+          type: string
+        "price":
+          type: integer
+        "qty":
+          type: integer
+        "sub_total":
+          type: integer
+        "image_url":
+          type: string
+        "notes":
+          type: string
+        "category":
+          type: string
+        "shop_name":
+          type: string
+        "id_product":
+          type: string
+        "id_user_seller":
+          type: string
+        "id_user_buyer":
+          type: string
+    "ArrCarttObject":
+      type: array
+      items:
+        $ref: "#/components/schemas/CartObject"  
+    "InsertOrdertObject":
+      type: object
+      properties:
+        "shipping_name":
+          type: string
+        "shipping_phone":
+          type: string
+        "shipping_address":
+          type: string
+        "shop_name":
+          type: string
+        "gross_ammount":
+          type: integer  
+        "order_status":
+          type: string
+        "id_user_buyer":
+          type: integer
+        "id_user_seller":
+          type: integer
+    "OrdertObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "shipping_name":
+          type: string
+        "shipping_phone":
+          type: string
+        "shipping_address":
+          type: string
+        "shop_name":
+          type: string
+        "gross_ammount":
+          type: integer  
+        "order_status":
+          type: string
+        "snap_token":
+          type: string
+        "redirect_url":
+          type: string
+        "id_user_buyer":
+          type: integer
+        "id_user_seller":
+          type: integer
+    "SuccesArrayOrderResult":
+      type: array
+      items:
+        $ref: "#/components/schemas/OrdertObject"  
+    "InsertItemOrderObject":
+      type: object
+      properties:
+        "product_name":
+          type: string
+        "price":
+          type: integer
+        "image_url":
+          type: string
+        "qty":
+          type: integer
+        "sub_total":
+          type: integer
+        "notes":
+          type: string
+        "shop_name":
+          type: string
+        "id_order":
+          type: integer
+        "id_product":
+          type: integer
+        "id_user_seller":
+          type: string
+        "id_user_buyer":
+          type: string
+    "ItemOrderObject":
+      type: object
+      properties:
+        "id":
+          type: integer
+        "product_name":
+          type: string
+        "price":
+          type: integer
+        "image_url":
+          type: string
+        "qty":
+          type: integer
+        "sub_total":
+          type: integer
+        "notes":
+          type: string
+        "shop_name":
+          type: string
+        "id_order":
+          type: integer
+        "id_product":
+          type: integer
+        "id_user_seller":
+          type: string
+        "id_user_buyer":
+          type: string
+    "ArrItemOrderObject":
+      type: array
+      items:
+        $ref: "#/components/schemas/ItemOrderObject"  
     "SuccessResult":
       type: object
       properties:
@@ -1076,7 +1332,7 @@ components:
           type: object
         token: 
           type: string
-    "SuccesArrayResult":
+    "SuccesArrayProductResult":
       type: object
       properties:
         message: 
@@ -1084,8 +1340,25 @@ components:
         data:
           type: array
           items : 
-            $ref: "#/components/schemas/ArrCommentObject"
-          
+            $ref: "#/components/schemas/ArrProductObject"
+    "SuccesArrayCartResult":
+      type: object
+      properties:
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrCarttObject" 
+    "SuccesArrayItemOrderResult":
+      type: object
+      properties:
+        message: 
+          type: string
+        data:
+          type: array
+          items : 
+            $ref: "#/components/schemas/ArrItemOrderObject" 
   responses:
     '200':
       description: "Success Process Data"
@@ -1132,6 +1405,41 @@ components:
           example:
             message: "Process Failed. User not authorized for this request."
     '500':
+      description: "Error from server"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. Please check server."
+    '400_midtrans':
+      description: "Wrong Request From User"
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "Process Failed. Please check your input."
+    '401_midtrans':
+      description: "Authorization information is missing or invalid."
+      content:
+        "application/json":
+          schema:
+            type: object
+            properties:
+              error_message:
+                type: object
+          example:
+            error_message:
+            - "Access denied due to unauthorized transaction, please check client or server key"
+            - "Visit https://snap-docs.midtrans.com/#request-headers for more details"
+    '500_midtrans':
       description: "Error from server"
       content:
         "application/json":
